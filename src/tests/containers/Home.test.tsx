@@ -11,7 +11,7 @@ describe("Home container", () => {
 
   test("renders home", () => {
     const { container } = render(<Home />);
-    const homeTitle = screen.getByText(/Home/i);
+    const homeTitle = screen.getByText(/Rock, Paper & Scissors/i);
     const btnStartGame = screen.getByTestId("btn-start-game");
     const btnJoinGame = screen.getByTestId("btn-join-game");
     expect(btnJoinGame).toBeInTheDocument();
@@ -21,8 +21,6 @@ describe("Home container", () => {
 
   test("renders new game form", async () => {
     const { container } = render(<Home />);
-    const homeTitle = screen.getByText(/Home/i);
-
     fireEvent(
       screen.getByTestId("btn-start-game"),
       new MouseEvent("click", {
@@ -43,7 +41,6 @@ describe("Home container", () => {
 
   test("renders join game form", async () => {
     const { container } = render(<Home />);
-    const homeTitle = screen.getByText(/Home/i);
 
     fireEvent(
       screen.getByTestId("btn-join-game"),

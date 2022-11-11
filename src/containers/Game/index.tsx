@@ -32,7 +32,7 @@ const Game = (props: any) => {
     // @TODO: put in place websock to avoid multiple requests to api to retrieve the last rounds for this game
     const intervalRef = setInterval(() => {
       fetchRoundsByGameId(props.match.params.id);
-      if (!canHaveMoreRounds()) {
+      if (shouldClearRoundsFetch()) {
         clearInterval(intervalRef);
         getBestOfRounds();
       }
@@ -81,6 +81,10 @@ const Game = (props: any) => {
   const isAvailableToPlayAction = (isHostPlayer: boolean) => {
     // if missing action from oponent
     const lastRound = gameRounds[0];
+
+    if (gameRounds.length === 0 && isHostPlayer) {
+      return true;
+    }
 
     if (lastRound && isHostPlayer && !lastRound.hostAction) {
       // Last round played by guest. Enable host to play
@@ -150,9 +154,12 @@ const Game = (props: any) => {
     }
   };
 
+  const shouldClearRoundsFetch = () => {
+    return gameRounds && currentGame && gameRounds.length === currentGame.numberOfRounds;
+  }
+
   return (
     <>
-      {JSON.stringify(gameRounds)}
       <PlayerScreen
         currentGame={currentGame}
         currentPlayer={currentPlayer}

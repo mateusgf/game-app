@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Home.scss";
 import Button from "../../components/Atom/Button";
 import NewGameForm from "../../components/Molecule/NewGameForm";
 import JoinGameForm from "../../components/Molecule/JoinGameForm";
@@ -61,25 +62,51 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <h1>Home</h1>
-      {isNewGameFormVisible ? <NewGameForm onSubmit={newGameHandler} /> : null}
-      {isJoinGameFormVisible ? <JoinGameForm onSubmit={joinGameHandler} /> : null}
-      <Button onClick={goToGamesList}>See started games</Button>
-      or
-      <Button
-        data-testid="btn-start-game"
-        onClick={() => setIsNewGameFormVisible(!isNewGameFormVisible)}
-      >
-        Start Game
-      </Button>
-      or
-      <Button
-        data-testid="btn-join-game"
-        onClick={() => setIsJoinGameFormVisible(!isJoinGameFormVisible)}
-      >
-        Join a game
-      </Button>
+    <div className="home">
+      <h1>Rock, Paper & Scissors</h1>
+      {isNewGameFormVisible ? (
+        <>
+          <h3>New game</h3>
+          <NewGameForm onSubmit={newGameHandler} />
+        </>
+      ) : null}
+      {isJoinGameFormVisible ? (
+        <>
+          <h3>Join game</h3>
+          <JoinGameForm onSubmit={joinGameHandler} />
+        </>
+      ) : null}
+
+      <div className="home--btns-wrp">
+        <Button
+          className="game-button--full-width"
+          data-testid="btn-start-game"
+          onClick={() => {
+            setIsNewGameFormVisible(!isNewGameFormVisible)
+            setIsJoinGameFormVisible(false);
+          }}
+        >
+          Start Game
+        </Button>
+
+        <div className="home--or-label">or</div>
+
+        <Button
+          className="game-button--full-width"
+          data-testid="btn-join-game"
+          onClick={() => {
+            setIsJoinGameFormVisible(!isJoinGameFormVisible)
+            setIsNewGameFormVisible(false)
+          }}
+        >
+          Join a game
+        </Button>
+
+        <div className="home--or-label">or</div>
+
+        <Button className="game-button--full-width" onClick={goToGamesList}>See started games</Button>
+      </div>
+
     </div>
   );
 };

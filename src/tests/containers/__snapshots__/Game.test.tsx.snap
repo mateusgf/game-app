@@ -2,7 +2,6 @@
 
 exports[`Game container match snapshot 1`] = `
 <div>
-  [{"id":30,"gameId":14,"hostAction":"","guestAction":"","winnerNickname":"","winnerAction":"","guestNickname":"I_am_guest","hostNickname":"I_am_host"},{"id":29,"gameId":14,"hostAction":"rock","guestAction":"scissors","winnerNickname":"I_am_host","winnerAction":"rock","guestNickname":"I_am_guest","hostNickname":"I_am_host"},{"id":28,"gameId":14,"hostAction":"paper","guestAction":"paper","winnerNickname":"draw","winnerAction":"draw","guestNickname":"I_am_guest","hostNickname":"I_am_host"}]
   <div
     class="player-screen"
     data-testid="player-screen"
