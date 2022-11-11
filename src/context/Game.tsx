@@ -97,7 +97,6 @@ export default function GameProvider({ children }: any) {
   };
 
   const createRound = async ({ gameId, hostAction, guestAction }: CreateRoundType) => {
-    console.log("createRound", { gameId, hostAction, guestAction });
     setIsLoading(true);
     try {
       const rounds = await createRoundAPI({ gameId, hostAction, guestAction });
@@ -116,7 +115,6 @@ export default function GameProvider({ children }: any) {
     hostAction,
     guestAction,
   }: UpdateRoundType) => {
-    console.log("updateRound", { id, gameId, hostAction, guestAction });
     setIsLoading(true);
     try {
       const rounds = await updateRoundAPI({

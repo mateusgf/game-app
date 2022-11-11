@@ -48,7 +48,6 @@ const Game = (props: any) => {
   };
 
   const playAction = async (action: string, isHostPlayer: boolean) => {
-    // console.log('action triggered: ', { action, isHostPlayer });
     const lastRound = gameRounds[0];
     if (gameRounds.length === 0 || (lastRound.hostAction && lastRound.guestAction)) {
       // First action
@@ -59,7 +58,6 @@ const Game = (props: any) => {
       }
     } else {
       // check if last round created is missing an action either from HOST or GUEST
-      // console.log('here', lastRound);
       if (lastRound && !lastRound.hostAction) {
         // Missing host action
         await updateRound({

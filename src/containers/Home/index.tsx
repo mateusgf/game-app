@@ -21,16 +21,9 @@ const Home = () => {
   };
 
   const newGameHandler = async (values: { nickname: string; numberOfRounds: string }) => {
-    console.log(values);
-
     const player = await createPlayer(values.nickname);
-    // console.log('player created', currentPlayer);
     if (player && player.nickname) {
-      // console.log('player created inside if', player);
-      // create game
       const game = await createGame(player.nickname, values.numberOfRounds);
-      // console.log('game created', game);
-
       if (game.id) {
         history.push({
           pathname: routeCodes.GAME.replace(":id", game.id),
@@ -40,8 +33,6 @@ const Home = () => {
   };
 
   const joinGameHandler = async (values: { nickname: string; gameId: string }) => {
-    console.log(values);
-
     const submitedPlayer = await getPlayerByNickname(values.nickname);
 
     // @TODO: check if game exists before creating the player
