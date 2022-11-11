@@ -1,0 +1,19 @@
+.game-button {
+  background-color: gray;
+  border: none;
+  color: black;
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  &:active {
+    background-color: #efefef;
+    transform: scale(1.1);
+    z-index: 2;
+  }
+}

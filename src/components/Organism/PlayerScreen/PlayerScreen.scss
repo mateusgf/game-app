@@ -1,0 +1,22 @@
+.player-screen {
+  &--game-id {
+    font-size: 1rem;
+    padding: 0;
+    margin: 0 0 0.625rem 0;
+  }
+
+  &--round-winner-message {
+    display: block;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    margin-bottom: 0.625rem;
+    text-align: center;
+    background-color: #333;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  &--divider {
+    margin-top: 20px;
+  }
+}

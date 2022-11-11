@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home container match snapshot 1`] = `
+<div>
+  <div>
+    <h1>
+      Home
+    </h1>
+    <button
+      class="game-button undefined"
+    >
+      See started games
+    </button>
+    or
+    <button
+      class="game-button undefined"
+      data-testid="btn-start-game"
+    >
+      Start Game
+    </button>
+    or
+    <button
+      class="game-button undefined"
+      data-testid="btn-join-game"
+    >
+      Join a game
+    </button>
+  </div>
+</div>
+`;
