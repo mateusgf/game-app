@@ -9,7 +9,7 @@ interface IContextProps {
   setCurrentPlayer: Function;
 }
 
-export const PlayerContext = createContext({} as IContextProps);
+const PlayerContext = createContext({} as IContextProps);
 
 export default function PlayerProvider({ children }: any) {
   const [isLoading, setIsLoading] = useState(false);
