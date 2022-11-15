@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PlayerActions container match snapshot 1`] = `
+exports[`PlayerActions molecule component match snapshot 1`] = `
 <div>
   <div
     class="player-actions"

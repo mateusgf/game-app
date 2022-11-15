@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import PlayerActions from "../../../components/Molecule/PlayerActions";
 
-describe("PlayerActions container", () => {
+describe("PlayerActions molecule component", () => {
   test("match snapshot", () => {
 
     const mockedProps = {
