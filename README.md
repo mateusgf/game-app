@@ -1,8 +1,5 @@
 # Getting Started
 
-UPDATE NOVEMBER/15: increase test coverage:
-<https://github.com/mateusgf/game-app/pull/1>
-
 create-react-app + typescript + sass + prettier + jest
 
 ## Installing
