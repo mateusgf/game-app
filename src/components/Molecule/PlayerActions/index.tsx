@@ -44,7 +44,7 @@ const PlayerActions = ({
       </div>
     </div>
   ) : (
-    <h1>Waiting for opponent to play</h1>
+    <h1 data-testid="waiting-opponent-label">Waiting for opponent to play</h1>
   );
 };
 

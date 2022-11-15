@@ -27,11 +27,11 @@ const PlayerScreen = ({
 }: IPlayerScreenProps) => {
   return (
     <div className="player-screen" data-testid="player-screen">
-      <h1 className="player-screen--game-id">
+      <h1 className="player-screen--game-id" data-testid="game-id-header">
         Game ID: {currentGame.id} | Rounds: {currentGame.numberOfRounds}
       </h1>
       {canHaveMoreRounds && resultMessageForLastRound ? (
-        <span className="player-screen--round-winner-message">
+        <span className="player-screen--round-winner-message" data-testid="winner-last-round-message">
           {resultMessageForLastRound}
         </span>
       ) : null}
@@ -43,7 +43,7 @@ const PlayerScreen = ({
           isAvailableToPlayAction={isAvailableToPlayAction(isHostPlayer)}
         />
       ) : (
-        <h3>All rounds ended</h3>
+        <h3 data-testid="all-rounds-ended-label">All rounds ended</h3>
       )}
 
       {!canHaveMoreRounds ? (

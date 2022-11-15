@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, RouteComponentProps } from "react-router-dom";
 import { useGame } from "../../context/Game";
 import { usePlayer } from "../../context/Player";
 import { routeCodes } from "../../constants/routes";
 import PlayerScreen from "../../components/Organism/PlayerScreen";
 
-const Game = (props: any) => {
+type TParams = { id?: string };
+
+const Game = ({ match }: RouteComponentProps<TParams>) => {
   const history = useHistory();
   const { currentPlayer } = usePlayer();
   const {
@@ -15,11 +17,14 @@ const Game = (props: any) => {
     gameRounds,
     createRound,
     updateRound,
+    shouldClearRoundsFetch,
+    getBestOfRounds,
+    playAction
   } = useGame();
 
   useEffect(() => {
     const load = async () => {
-      const id = props.match.params.id;
+      const id = match.params.id;
       if (!currentPlayer.nickname) {
         history.push(routeCodes.HOME);
       } else if (currentPlayer.nickname && id) {
@@ -31,7 +36,7 @@ const Game = (props: any) => {
 
     // @TODO: put in place websock to avoid multiple requests to api to retrieve the last rounds for this game
     const intervalRef = setInterval(() => {
-      fetchRoundsByGameId(props.match.params.id);
+      fetchRoundsByGameId(match.params.id);
       if (shouldClearRoundsFetch()) {
         clearInterval(intervalRef);
         getBestOfRounds();
@@ -47,34 +52,6 @@ const Game = (props: any) => {
     return currentGame.hostNickname === currentPlayer.nickname;
   };
 
-  const playAction = async (action: string, isHostPlayer: boolean) => {
-    const lastRound = gameRounds[0];
-    if (gameRounds.length === 0 || (lastRound.hostAction && lastRound.guestAction)) {
-      // First action
-      if (isHostPlayer) {
-        await createRound({ gameId: currentGame.id, hostAction: action });
-      } else {
-        await createRound({ gameId: currentGame.id, guestAction: action });
-      }
-    } else {
-      // check if last round created is missing an action either from HOST or GUEST
-      if (lastRound && !lastRound.hostAction) {
-        // Missing host action
-        await updateRound({
-          id: lastRound.id,
-          gameId: currentGame.id,
-          hostAction: action,
-        });
-      } else if (lastRound && !lastRound.guestAction) {
-        await updateRound({
-          id: lastRound.id,
-          gameId: currentGame.id,
-          guestAction: action,
-        });
-      }
-    }
-    await getGameById(currentGame.id);
-  };
 
   const isAvailableToPlayAction = (isHostPlayer: boolean) => {
     // if missing action from oponent
@@ -131,30 +108,9 @@ const Game = (props: any) => {
 
   const stillMissingActionToEndRound = () => {
     const lastRound = gameRounds?.[0];
-    return !lastRound.guestAction || !lastRound.hostAction;
+    return lastRound && (!lastRound.guestAction || !lastRound.hostAction);
   };
 
-  const getBestOfRounds = () => {
-    if (currentGame && gameRounds) {
-      const winsByNickname = {
-        [currentGame.hostNickname]: 0,
-        [currentGame.guestNickname]: 0,
-      };
-
-      gameRounds
-        .filter((round) => round.winnerAction !== "draw")
-        .forEach((round) => {
-          const winner = round.winnerNickname;
-          winsByNickname[winner as string] += 1;
-        });
-
-      return winsByNickname;
-    }
-  };
-
-  const shouldClearRoundsFetch = () => {
-    return gameRounds && currentGame && gameRounds.length === currentGame.numberOfRounds;
-  }
 
   return (
     <>

@@ -17,6 +17,7 @@
     "@types/react-router-dom": "^5.1.7",
     "formik": "^2.2.9",
     "lodash": "^4.17.21",
+    "msw": "^0.48.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.0",
@@ -43,7 +44,14 @@
     "extends": [
       "react-app",
       "react-app/jest",
-      "prettier" 
+      "prettier"
+    ]
+  },
+  "jest": {
+    "coveragePathIgnorePatterns" : [
+      "<rootDir>/src/tests/testUtils/testingLibraryUtils.tsx",
+      "<rootDir>/src/tests/mocks/handlers.ts",
+      "<rootDir>/src/tests/mocks/server.ts"
     ]
   },
   "browserslist": {
