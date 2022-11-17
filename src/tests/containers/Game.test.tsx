@@ -59,7 +59,6 @@ const mockFetchRoundsByGameId = jest.fn(() => mockGameRounds);
 const mockShouldClearRoundsFetch = jest.fn(() => true);
 const mockGetBestOfRounds = jest.fn(() => ({I_am_host: 1, I_am_guest: 0}));
 const mockPlayAction = jest.fn(() => null);
-const mockIsAvailableToPlayAction = jest.fn((val) => true);
 
 jest.mock("../../context/Game", () => ({
   ...jest.requireActual("../../context/Game"),

@@ -6,7 +6,7 @@ interface IProps {
 }
 
 const wrapper = ({ children }: IProps) => <GameProvider>{children}</GameProvider>
-const renderWithContext = (ui: any, options: any) => render(ui, {wrapper: GameProvider, ...options});
+const renderWithContext = (ui: any, options: any) => render(ui, {wrapper, ...options});
 
 export * from "@testing-library/react";
 

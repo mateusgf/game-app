@@ -10,7 +10,7 @@ const GamesList = () => {
 
   return (
     <div>
-      <h3>Games:</h3>
+      <h3 data-testid="heading-games-list">Games:</h3>
       <table border={1} width="100%">
         <thead>
           <tr>

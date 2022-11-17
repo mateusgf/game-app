@@ -15,8 +15,6 @@ const Game = ({ match }: RouteComponentProps<TParams>) => {
     getGameById,
     fetchRoundsByGameId,
     gameRounds,
-    createRound,
-    updateRound,
     shouldClearRoundsFetch,
     getBestOfRounds,
     playAction

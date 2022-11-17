@@ -2,8 +2,6 @@ import Game from "../../containers/Game";
 import {render, screen, waitFor} from "../testUtils/testingLibraryUtils";
 import { usePlayer } from "../../context/Player";
 
-jest.useFakeTimers();
-
 jest.mock("../../api/requests/player/createPlayer", () => {
   const original = jest.requireActual("../../api/requests/player/createPlayer");
   return {

@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Home from "../../containers/Home";
@@ -201,5 +200,40 @@ describe("Home container", () => {
     await waitFor(() => expect(getPlayerByNickname).toBeCalled());
     await waitFor(() => expect(mockJoinGame).toBeCalled());
     await waitFor(() => expect(mockHistoryPush).toHaveBeenCalledWith({"pathname": "/game/14"}));
+  });
+
+  test("join game with error", async () => {
+    render(<Home />, {});
+
+    fireEvent(
+      screen.getByTestId("btn-join-game"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+
+    const nickNameInput = screen.getByTestId("input-nickname");
+    const gameIdInput = screen.getByTestId("input-game-id");
+
+    act(() => {
+      fireEvent.change(nickNameInput, {target: {value: "I_am_host"}});
+      fireEvent.change(gameIdInput, {target: {value: 14}});
+    });
+
+    act(() => {
+      fireEvent(
+        screen.getByTestId("btn-join"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+    });
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    // @ts-expect-error
+    mockJoinGame.mockReturnValue(false);
+
+    await waitFor(() => expect(alert).toBeCalledWith("Could not join the game"));
   });
 });

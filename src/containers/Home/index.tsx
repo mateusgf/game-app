@@ -39,7 +39,7 @@ const Home = () => {
 
     if (!submitedPlayer || !submitedPlayer.nickname) {
       // Player does not exist yet, so create one
-      const player = await createPlayer(values.nickname);
+      await createPlayer(values.nickname);
     }
 
     if (await joinGame(values.gameId, values.nickname)) {

@@ -7,6 +7,8 @@ const mockNewGame = {
   numberOfRounds: 1,
 };
 
+const mockGames = [mockNewGame];
+
 const mockNewPlayer = {nickname: "droid1"};
 
 const mockCurrentGame = {
@@ -60,6 +62,12 @@ const mockGameRounds15 = [
 ];
 
 export const handlers = [
+
+  rest.get("http://localhost:8001/games", (req, res, ctx) => {
+    return res(
+      ctx.json(mockGames)
+    );
+  }),
 
   rest.post("http://localhost:8001/games/new", (req, res, ctx) => {
     return res(

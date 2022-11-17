@@ -1,7 +1,7 @@
 import "./JoinGameForm.scss";
 import Input from "../../../components/Atom/Input";
 import Button from "../../../components/Atom/Button";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 
 interface IJoinGameForm {
   onSubmit: Function;
