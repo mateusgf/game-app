@@ -11,7 +11,7 @@ function App({ children }: IAppProps) {
   return (
     <PlayerProvider>
       <GameProvider>
-        <div className="App">{children}</div>
+        <div className="App" data-testid="app">{children}</div>
       </GameProvider>
     </PlayerProvider>
   );

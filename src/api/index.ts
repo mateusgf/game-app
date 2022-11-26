@@ -1,5 +1,3 @@
-import { camelCase, isArray, transform, isObject } from "lodash";
-
 const base = `${process.env.REACT_APP_API_URL}`;
 
 interface IPayload {
@@ -7,11 +5,10 @@ interface IPayload {
   method: string;
   body?: { [key: string]: any };
   headers?: { [key: string]: any };
-  transformToCamelCase?: boolean;
 }
 
 const api = (payload: IPayload) => {
-  const { path, method, body, headers, transformToCamelCase = true } = payload;
+  const { path, method, body, headers } = payload;
   const bodyJson = JSON.stringify(body);
   const url = `${base}/${path}`;
 
@@ -21,11 +18,11 @@ const api = (payload: IPayload) => {
   };
 
   return fetch(url, { method, body: bodyJson, headers: headersObj }).then((response) =>
-    handleResponse(response, transformToCamelCase),
+    handleResponse(response),
   );
 };
 
-export const handleResponse = (response: any, transformToCamelCase: boolean) => {
+export const handleResponse = (response: any) => {
   return response.text().then((text: string) => {
     const data = text && IsJsonString(text) && JSON.parse(text);
 
@@ -39,11 +36,11 @@ export const handleResponse = (response: any, transformToCamelCase: boolean) => 
       return Promise.reject(error);
     }
 
-    return transformToCamelCase ? camelize(data) : data;
+    return data;
   });
 };
 
-const IsJsonString = (str: string) => {
+export const IsJsonString = (str: string) => {
   try {
     JSON.parse(str);
   } catch (e) {
@@ -51,23 +48,5 @@ const IsJsonString = (str: string) => {
   }
   return true;
 };
-
-// const camelize = (obj: any) => _.transform(obj, (acc, value, key, target) => {
-//   const camelKey = _.isArray(target) ? key : _.camelCase(key as string);
-
-//   //@ts-expect-error
-//   acc[camelKey] = _.isObject(value) ? camelize(value) : value;
-// });
-
-const camelize = (obj: Record<string, unknown>) =>
-  transform(
-    obj,
-    (result: Record<string, unknown>, value: unknown, key: string, target) => {
-      const camelKey = isArray(target) ? key : camelCase(key);
-      result[camelKey] = isObject(value)
-        ? camelize(value as Record<string, unknown>)
-        : value;
-    },
-  );
 
 export default api;

@@ -16,7 +16,8 @@
     "@types/react-dom": "^18.0.8",
     "@types/react-router-dom": "^5.1.7",
     "formik": "^2.2.9",
-    "lodash": "^4.17.21",
+    "jest-junit": "^14.0.1",
+    "msw": "^0.48.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.0",
@@ -29,7 +30,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:coverage": "npm run test -- --coverage",
+    "test:coverage": "npm run test -- --coverage --watchAll",
+    "test:coverage:collect": "react-scripts test --reporters=jest-junit --reporters=default --coverage --coverageDirectory='testresults/coverage' --coverageReporters=cobertura --coverageReporters=lcov --watchAll=false",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "format": "prettier --write \"src/**/*.+(js|jsx|json|css|md|ts|tsx|scss)\"",
@@ -43,8 +45,32 @@
     "extends": [
       "react-app",
       "react-app/jest",
-      "prettier" 
+      "prettier"
     ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "text"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/tests/testUtils",
+      "!<rootDir>/src/tests/mocks",
+      "!src/**/*.d.ts",
+      "!src/tests/testUtils/testingLibraryUtils.tsx",
+      "!src/tests/mocks/handlers.ts",
+      "!src/tests/mocks/server.ts",
+      "!src/types/",
+      "!src/reportWebVitals.ts",
+      "!src/index.tsx"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 75,
+        "statements": 75
+      }
+    }
   },
   "browserslist": {
     "production": [

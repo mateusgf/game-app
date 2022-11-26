@@ -39,7 +39,7 @@ const Home = () => {
 
     if (!submitedPlayer || !submitedPlayer.nickname) {
       // Player does not exist yet, so create one
-      const player = await createPlayer(values.nickname);
+      await createPlayer(values.nickname);
     }
 
     if (await joinGame(values.gameId, values.nickname)) {
@@ -95,7 +95,7 @@ const Home = () => {
 
         <div className="home--or-label">or</div>
 
-        <Button className="game-button--full-width" onClick={goToGamesList}>See started games</Button>
+        <Button className="game-button--full-width" data-testid="goto-listing" onClick={goToGamesList}>See started games</Button>
       </div>
 
     </div>

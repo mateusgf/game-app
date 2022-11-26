@@ -8,12 +8,19 @@ exports[`Game container match snapshot 1`] = `
   >
     <h1
       class="player-screen--game-id"
+      data-testid="game-id-header"
     >
       Game ID: 
       14
        | Rounds: 
       4
     </h1>
+    <span
+      class="player-screen--round-winner-message"
+      data-testid="winner-last-round-message"
+    >
+      Winner of last turn was: I_am_host
+    </span>
     <div
       class="player-actions"
       data-testid="player-actions"

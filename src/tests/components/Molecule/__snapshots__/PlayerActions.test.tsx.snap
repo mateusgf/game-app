@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlayerActions molecule component match snapshot 1`] = `
+<div>
+  <div
+    class="player-actions"
+    data-testid="player-actions"
+  >
+    <div
+      class="player-actions--action-wrp"
+      data-testid="action-rock"
+    >
+      <img
+        alt="rock"
+        src="rock.jpg"
+      />
+      <span
+        class="player-actions--action-label"
+      >
+        rock
+      </span>
+    </div>
+    <div
+      class="player-actions--action-wrp"
+      data-testid="action-paper"
+    >
+      <img
+        alt="paper"
+        src="paper.jpg"
+      />
+      <span
+        class="player-actions--action-label"
+      >
+        paper
+      </span>
+    </div>
+    <div
+      class="player-actions--action-wrp"
+      data-testid="action-scissors"
+    >
+      <img
+        alt="scissors"
+        src="scissors.jpg"
+      />
+      <span
+        class="player-actions--action-label"
+      >
+        scissors
+      </span>
+    </div>
+  </div>
+</div>
+`;

@@ -22,6 +22,9 @@ interface IContextProps {
   gameRounds: GameRound[];
   createRound: Function;
   updateRound: Function;
+  shouldClearRoundsFetch: Function;
+  getBestOfRounds: Function;
+  playAction: Function;
 }
 
 const GameContext = createContext({} as IContextProps);
@@ -132,6 +135,57 @@ export default function GameProvider({ children }: any) {
     setIsLoading(false);
   };
 
+  const shouldClearRoundsFetch = () => {
+    return gameRounds && currentGame && gameRounds.length === currentGame.numberOfRounds;
+  }
+
+  const getBestOfRounds = () => {
+    if (currentGame && gameRounds) {
+      const winsByNickname = {
+        [currentGame.hostNickname]: 0,
+        [currentGame.guestNickname]: 0,
+      };
+
+      gameRounds
+        .filter((round: GameRound) => round.winnerAction !== "draw")
+        .forEach((round: GameRound) => {
+          const winner = round.winnerNickname;
+          winsByNickname[winner as string] += 1;
+        });
+
+      return winsByNickname;
+    }
+  };
+
+  const playAction = async (action: string, isHostPlayer: boolean) => {
+    const lastRound: GameRound = gameRounds[0];
+    if (gameRounds.length === 0 || (lastRound.hostAction && lastRound.guestAction)) {
+      // First action
+      if (isHostPlayer) {
+        await createRound({ gameId: currentGame.id, hostAction: action });
+      } else {
+        await createRound({ gameId: currentGame.id, guestAction: action });
+      }
+    } else {
+      // check if last round created is missing an action either from HOST or GUEST
+      if (lastRound && !lastRound.hostAction) {
+        // Missing host action
+        await updateRound({
+          id: lastRound.id,
+          gameId: currentGame.id,
+          hostAction: action,
+        });
+      } else if (lastRound && !lastRound.guestAction) {
+        await updateRound({
+          id: lastRound.id,
+          gameId: currentGame.id,
+          guestAction: action,
+        });
+      }
+    }
+    await getGameById(currentGame.id);
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -146,6 +200,9 @@ export default function GameProvider({ children }: any) {
         fetchRoundsByGameId,
         createRound,
         updateRound,
+        shouldClearRoundsFetch,
+        getBestOfRounds,
+        playAction,
       }}
     >
       {children}
@@ -167,6 +224,9 @@ export function useGame() {
     fetchRoundsByGameId,
     createRound,
     updateRound,
+    shouldClearRoundsFetch,
+    getBestOfRounds,
+    playAction,
   } = context;
 
   return {
@@ -181,5 +241,8 @@ export function useGame() {
     fetchRoundsByGameId,
     createRound,
     updateRound,
+    shouldClearRoundsFetch,
+    getBestOfRounds,
+    playAction,
   };
 }

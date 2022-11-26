@@ -35,6 +35,7 @@ exports[`Home container match snapshot 1`] = `
       </div>
       <button
         class="game-button game-button--full-width"
+        data-testid="goto-listing"
       >
         See started games
       </button>

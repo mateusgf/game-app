@@ -1,6 +1,6 @@
 import api from "../../../api";
 
-const createGame = (gameId: number, nickname: string) => {
+const joinGame = (gameId: number, nickname: string) => {
   const payload = {
     path: `games/join-game`,
     method: "post",
@@ -12,4 +12,4 @@ const createGame = (gameId: number, nickname: string) => {
   return api(payload);
 };
 
-export default createGame;
+export default joinGame;

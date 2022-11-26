@@ -1,7 +1,29 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Game from "../../containers/Game";
+
+jest.useFakeTimers();
+
+jest.mock("../../context/Player", () => ({
+  ...jest.requireActual("../../context/Player"),
+  usePlayer: () => {
+    return {
+      currentPlayer: { nickname: "I_am_host" },
+      createPlayer: jest.fn(() => { nickname: "I_am_host" }),
+    };  
+  },
+}));
+
+const mockHistoryPush = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({
+    push: mockHistoryPush,
+  }),
+}));
+
+const mockCreateGame = jest.fn();
 
 const mockCurrentGame = {
   id: 14,
@@ -10,16 +32,6 @@ const mockCurrentGame = {
   numberOfRounds: 4,
 };
 const mockGameRounds = [
-  {
-    id: 30,
-    gameId: 14,
-    hostAction: "",
-    guestAction: "",
-    winnerNickname: "",
-    winnerAction: "",
-    guestNickname: "I_am_guest",
-    hostNickname: "I_am_host",
-  },
   {
     id: 29,
     gameId: 14,
@@ -42,33 +54,38 @@ const mockGameRounds = [
   },
 ];
 
+const mockCreateRound = jest.fn(() => mockGameRounds);
+const mockFetchRoundsByGameId = jest.fn(() => mockGameRounds);
+const mockShouldClearRoundsFetch = jest.fn(() => true);
+const mockGetBestOfRounds = jest.fn(() => ({I_am_host: 1, I_am_guest: 0}));
+const mockPlayAction = jest.fn(() => null);
+
 jest.mock("../../context/Game", () => ({
   ...jest.requireActual("../../context/Game"),
-  useGame: () => {
-    return {
-      currentGame: mockCurrentGame,
-      gameRounds: mockGameRounds,
-      getGameById: () => mockCurrentGame,
-      fetchRoundsByGameId: () => mockGameRounds,
-      createRound: () => {},
-      updateRound: () => {},
-    };
-  },
+  useGame: () => ({
+    createGame: mockCreateGame,
+    currentGame: mockCurrentGame,
+    gameRounds: mockGameRounds,
+    getGameById: jest.fn(() => mockCurrentGame),
+    createRound: mockCreateRound,
+    fetchRoundsByGameId: mockFetchRoundsByGameId,
+    shouldClearRoundsFetch: mockShouldClearRoundsFetch,
+    getBestOfRounds: mockGetBestOfRounds,
+    playAction: mockPlayAction,
+  }),
 }));
-jest.mock("../../context/Player", () => ({
-  ...jest.requireActual("../../context/Player"),
-  usePlayer: () => {
-    return {
-      currentPlayer: { nickname: "dummy" },
-    };
-  },
-}));
+
+afterEach(() => {
+  cleanup();
+});
+
 
 describe("Game container", () => {
   test("match snapshot", () => {
     const mockedProps = {
-      match: { params: { id: 1 } },
+      match: { params: { id: 14 } },
     };
+    // @ts-expect-error
     const { container } = render(<Game {...mockedProps} />);
     expect(container).toMatchSnapshot();
   });
@@ -77,6 +94,7 @@ describe("Game container", () => {
     const mockedProps = {
       match: { params: { id: 14 } },
     };
+    // @ts-expect-error
     const { container } = render(<Game {...mockedProps} />);
 
     const gameIdLabel = screen.getByText(/Game ID/i);
@@ -93,5 +111,48 @@ describe("Game container", () => {
     expect(actionRock).toBeTruthy();
     expect(actionPaper).toBeTruthy();
     expect(actionScissors).toBeTruthy();
+  });
+
+  test("call fetchRoundsByGameId", async () => {
+
+    const mockedProps = {
+      match: { params: { id: 14 } },
+    };
+    // @ts-expect-error
+    render(<Game {...mockedProps} />);
+
+    await waitFor(() => expect(mockFetchRoundsByGameId).toBeCalledWith(14));
+  });
+
+  test("call getBestOfRounds", async () => {
+    const mockedProps = {
+      match: { params: { id: 14 } },
+    };
+    // @ts-expect-error
+    render(<Game {...mockedProps} />);
+    
+    await waitFor(() => expect(mockGetBestOfRounds).toBeCalled());
+
+    jest.spyOn(global, "setTimeout");
+    await waitFor(() => expect(setTimeout).toBeCalled());
+  });
+
+  test("call playAction", async () => {
+    const mockedProps = {
+      match: { params: { id: 14 } },
+    };
+    // @ts-expect-error
+    render(<Game {...mockedProps} />);
+
+    fireEvent(
+      screen.getByTestId("action-rock"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+    
+    const isHostPlayer = true;
+    await waitFor(() => expect(mockPlayAction).toBeCalledWith("rock", isHostPlayer));
   });
 });
